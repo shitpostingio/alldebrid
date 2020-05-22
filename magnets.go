@@ -39,18 +39,23 @@ type StatusMagnetResponse struct {
 	Status string `json:"status"`
 	Data   struct {
 		Magnets []struct {
-			ID            int           `json:"id"`
-			Filename      string        `json:"filename"`
-			Size          int           `json:"size"`
-			Status        string        `json:"status"`
-			StatusCode    int           `json:"statusCode"`
-			Downloaded    int           `json:"downloaded"`
-			Uploaded      int           `json:"uploaded"`
-			Seeders       int           `json:"seeders"`
-			DownloadSpeed int           `json:"downloadSpeed"`
-			UploadSpeed   int           `json:"uploadSpeed"`
-			UploadDate    int           `json:"uploadDate"`
-			Links         []interface{} `json:"links"`
+			ID            int    `json:"id"`
+			Filename      string `json:"filename"`
+			Size          int    `json:"size"`
+			Status        string `json:"status"`
+			StatusCode    int    `json:"statusCode"`
+			Downloaded    int    `json:"downloaded"`
+			Uploaded      int    `json:"uploaded"`
+			Seeders       int    `json:"seeders"`
+			DownloadSpeed int    `json:"downloadSpeed"`
+			UploadSpeed   int    `json:"uploadSpeed"`
+			UploadDate    int    `json:"uploadDate"`
+			Links         []struct {
+				Link     string      `json:"link"`
+				Filename string      `json:"filename"`
+				Size     int         `json:"size"`
+				Files    interface{} `json:"files"`
+			} `json:"links"`
 		} `json:"magnets"`
 	} `json:"data,omitempty"`
 	Error Error `json:"error,omitempty"`
