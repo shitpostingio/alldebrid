@@ -63,10 +63,6 @@ type DeleteMagnetResponse struct {
 	} `json:"data"`
 }
 
-type MagnetBody struct {
-	Magnets []string `json:"magnets"`
-}
-
 func (c *Client) UploadMagnet(magnets []string) (MagnetsUploadResponse, error) {
 	client := &http.Client{}
 
