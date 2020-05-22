@@ -1,0 +1,21 @@
+name: Go
+
+on:
+  push:
+    branches-ignore:
+      - master
+
+jobs:
+
+  format:
+    name: fmt
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.13
+      id: go
+
+    - name: go-fmt
+      run: go fmt $(go list ./... | grep -v /vendor/)
