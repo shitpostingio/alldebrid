@@ -59,8 +59,7 @@ type DelayedResponse struct {
 
 // UnlockLink returns a downloadable link
 func (c *Client) UnlockLink(link string) (UnlockLinkResponse, error) {
-	resp, err := http.Get(fmt.Sprintf(unlock, magnetURL, c.AppName, c.APIKEY, link))
-
+	resp, err := http.Get(fmt.Sprintf(linkunlock, magnetURL, c.AppName, c.APIKEY, link))
 	if err != nil {
 		return UnlockLinkResponse{}, err
 	}
@@ -85,8 +84,7 @@ func (c *Client) UnlockLink(link string) (UnlockLinkResponse, error) {
 
 //StreamingLink returns a delayed id or the direct link
 func (c *Client) StreamingLink(stream, id string) (StreamingResponse, error) {
-	resp, err := http.Get(fmt.Sprintf(streaming, magnetURL, c.AppName, c.APIKEY, stream, id))
-
+	resp, err := http.Get(fmt.Sprintf(linkstreaming, magnetURL, c.AppName, c.APIKEY, stream, id))
 	if err != nil {
 		return StreamingResponse{}, err
 	}
@@ -111,8 +109,7 @@ func (c *Client) StreamingLink(stream, id string) (StreamingResponse, error) {
 
 // DelayedLink returns a downloadable link for the given delayed id
 func (c *Client) DelayedLink(delayedID string) (DelayedResponse, error) {
-	resp, err := http.Get(fmt.Sprintf(delayed, magnetURL, c.AppName, c.APIKEY, delayedID))
-
+	resp, err := http.Get(fmt.Sprintf(linkdelayed, magnetURL, c.AppName, c.APIKEY, delayedID))
 	if err != nil {
 		return DelayedResponse{}, err
 	}

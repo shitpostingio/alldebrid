@@ -88,8 +88,7 @@ func (c *Client) UploadMagnet(magnets []string) (MagnetsUploadResponse, error) {
 		ms.Add("magnets[]", magnet)
 	}
 
-	resp, err := client.PostForm(fmt.Sprintf(upload, magnetURL, c.AppName, c.APIKEY), ms)
-
+	resp, err := client.PostForm(fmt.Sprintf(magnetupload, magnetURL, c.AppName, c.APIKEY), ms)
 	if err != nil {
 		return MagnetsUploadResponse{}, err
 	}
@@ -114,8 +113,7 @@ func (c *Client) UploadMagnet(magnets []string) (MagnetsUploadResponse, error) {
 
 //StatusMagnet returns the status of an Alldebrid download
 func (c *Client) StatusMagnet(id string) (StatusMagnetResponse, error) {
-	resp, err := http.Get(fmt.Sprintf(status, magnetURL, c.AppName, c.APIKEY, id))
-
+	resp, err := http.Get(fmt.Sprintf(magnetstatus, magnetURL, c.AppName, c.APIKEY, id))
 	if err != nil {
 		return StatusMagnetResponse{}, err
 	}
@@ -140,8 +138,7 @@ func (c *Client) StatusMagnet(id string) (StatusMagnetResponse, error) {
 
 //DeleteMagnet removes a download from alldebrid
 func (c *Client) DeleteMagnet(id string) (DeleteMagnetResponse, error) {
-	resp, err := http.Get(fmt.Sprintf(delete, magnetURL, c.AppName, c.APIKEY, id))
-
+	resp, err := http.Get(fmt.Sprintf(magnetdelete, magnetURL, c.AppName, c.APIKEY, id))
 	if err != nil {
 		return DeleteMagnetResponse{}, err
 	}
@@ -166,8 +163,7 @@ func (c *Client) DeleteMagnet(id string) (DeleteMagnetResponse, error) {
 
 //RestartMagnet will restart a failed torrent
 func (c *Client) RestartMagnet(id string) (RestartMagnetResponse, error) {
-	resp, err := http.Get(fmt.Sprintf(restart, magnetURL, c.AppName, c.APIKEY, id))
-
+	resp, err := http.Get(fmt.Sprintf(magnetrestart, magnetURL, c.AppName, c.APIKEY, id))
 	if err != nil {
 		return RestartMagnetResponse{}, err
 	}
