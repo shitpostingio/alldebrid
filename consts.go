@@ -4,15 +4,26 @@ const (
 	// MagnetURL is the endpoint for the magnet API
 	magnetURL = "https://api.alldebrid.com/v4/magnet"
 
-	upload  = "%s/upload?agent=%s&apikey=%s"
-	status  = "%s/status?agent=%s&apikey=%s&id=%s"
-	delete  = "%s/delete?agent=%s&apikey=%s&id=%s"
-	restart = "%s/restart?agent=%s&apikey=%s&id=%s"
+	magnetupload  = "%s/upload?agent=%s&apikey=%s"
+	magnetstatus  = "%s/status?agent=%s&apikey=%s&id=%s"
+	magnetdelete  = "%s/delete?agent=%s&apikey=%s&id=%s"
+	magnetrestart = "%s/restart?agent=%s&apikey=%s&id=%s"
 
 	// LinksURL is the endpoint for the link API
 	linksURL = "https://api.alldebrid.com/v4/link"
 
-	unlock    = "%s/unlock?agent=%s&apikey=%s&link=%s"
-	streaming = "%s/streaming?agent=%s&apikey=%s&stream=%s&id=%s"
-	delayed   = "%s/delayed?agent=%s&apikey=%s&id=%s"
+	linkunlock    = "%s/unlock?agent=%s&apikey=%s&link=%s"
+	linkstreaming = "%s/streaming?agent=%s&apikey=%s&stream=%s&id=%s"
+	linkdelayed   = "%s/delayed?agent=%s&apikey=%s&id=%s"
+
+	// Hosts is the endpoint for the hosts API
+	hosts = "https://api.alldebrid.com/v4/hosts"
+
+	hostsall     = "%s?agent=%s"
+	hostsdomains = "%s/domains?agent=%s"
+
+	// User is the endpoint for user API
+	user = "https://api.alldebrid.com/v4/user"
+
+	userinfo = "%s?agent=%s&apikey=%s"
 )
