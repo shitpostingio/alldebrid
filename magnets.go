@@ -1,10 +1,11 @@
 package alldebrid
 
 import (
-	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 )
 
 const (
@@ -29,6 +30,10 @@ type MagnetsUploadResponse struct {
 			} `json:"error,omitempty"`
 		} `json:"magnets"`
 	} `json:"data"`
+	Error struct {
+		Code    string `json:"code"`
+		Message string `json:"message"`
+	} `json:"error,omitempty"`
 }
 
 type StatusMagnetResponse struct {
@@ -65,22 +70,13 @@ type MagnetBody struct {
 func (c *Client) UploadMagnet(magnets []string) (MagnetsUploadResponse, error) {
 	client := &http.Client{}
 
-	var magneti MagnetBody
+	ms := url.Values{}
 	for _, magnet := range magnets {
-		magneti.Magnets = append(magneti.Magnets, magnet)
+		ms.Add("magnets[]", magnet)
 	}
 
-	m, err := json.Marshal(magneti)
-	if err != nil {
-		return MagnetsUploadResponse{}, err
-	}
+	resp, err := client.PostForm(fmt.Sprintf(upload, magnetURL, c.AppName, c.APIKEY), ms)
 
-	req, err := http.NewRequest("POST", fmt.Sprintf(upload, magnetURL, c.AppName, c.APIKEY), bytes.NewBuffer(m))
-	if err != nil {
-		return MagnetsUploadResponse{}, err
-	}
-
-	resp, err := client.Do(req)
 	if err != nil {
 		return MagnetsUploadResponse{}, err
 	}
@@ -92,8 +88,8 @@ func (c *Client) UploadMagnet(magnets []string) (MagnetsUploadResponse, error) {
 	var uploadResponse MagnetsUploadResponse
 
 	err = decoder.Decode(&uploadResponse)
-	if err != nil {
-		return MagnetsUploadResponse{}, err
+	if uploadResponse.Status != "success" {
+		return MagnetsUploadResponse{}, errors.New(uploadResponse.Error.Message)
 	}
 
 	return uploadResponse, err
