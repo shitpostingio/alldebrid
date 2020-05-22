@@ -7,12 +7,6 @@ import (
 	"net/http"
 )
 
-const (
-	unlock    = "%s/unlock?agent=%s&apikey=%s&link=%s"
-	streaming = "%s/streaming?agent=%s&apikey=%s&stream=%s&id=%s"
-	delayed   = "%s/delayed?agent=%s&apikey=%s&id=%s"
-)
-
 //UnlockLinkResponse is the response of the unlock link call
 type UnlockLinkResponse struct {
 	Status string `json:"status"`

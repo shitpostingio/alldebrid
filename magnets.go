@@ -8,13 +8,6 @@ import (
 	"net/url"
 )
 
-const (
-	upload  = "%s/upload?agent=%s&apikey=%s"
-	status  = "%s/status?agent=%s&apikey=%s&id=%s"
-	delete  = "%s/delete?agent=%s&apikey=%s&id=%s"
-	restart = "%s/restart?agent=%s&apikey=%s&id=%s"
-)
-
 //Error is the error struct
 type Error struct {
 	Code    string `json:"code"`
