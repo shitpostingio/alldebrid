@@ -29,7 +29,7 @@ type MagnetsUploadResponse struct {
 				Message string `json:"message"`
 			} `json:"error,omitempty"`
 		} `json:"magnets"`
-	} `json:"data"`
+	} `json:"data,omitempty"`
 	Error struct {
 		Code    string `json:"code"`
 		Message string `json:"message"`
@@ -53,14 +53,22 @@ type StatusMagnetResponse struct {
 			UploadDate    int           `json:"uploadDate"`
 			Links         []interface{} `json:"links"`
 		} `json:"magnets"`
-	} `json:"data"`
+	} `json:"data,omitempty"`
+	Error struct {
+		Code    string `json:"code"`
+		Message string `json:"message"`
+	} `json:"error,omitempty"`
 }
 
 type DeleteMagnetResponse struct {
 	Status string `json:"status"`
 	Data   struct {
 		Message string `json:"message"`
-	} `json:"data"`
+	} `json:"data,omitempty"`
+	Error struct {
+		Code    string `json:"code"`
+		Message string `json:"message"`
+	} `json:"error,omitempty"`
 }
 
 func (c *Client) UploadMagnet(magnets []string) (MagnetsUploadResponse, error) {
@@ -89,5 +97,46 @@ func (c *Client) UploadMagnet(magnets []string) (MagnetsUploadResponse, error) {
 	}
 
 	return uploadResponse, err
+}
 
+func (c *Client) StatusMagnet(id string) (StatusMagnetResponse, error) {
+	resp, err := http.Get(fmt.Sprintf(status, magnetURL, c.AppName, c.APIKEY, id))
+
+	if err != nil {
+		return StatusMagnetResponse{}, err
+	}
+
+	defer resp.Body.Close()
+
+	decoder := json.NewDecoder(resp.Body)
+
+	var statusResponse StatusMagnetResponse
+
+	err = decoder.Decode(&statusResponse)
+	if statusResponse.Status != "success" {
+		return StatusMagnetResponse{}, errors.New(statusResponse.Error.Message)
+	}
+
+	return statusResponse, err
+}
+
+func (c *Client) DeleteMagnet(id string) (DeleteMagnetResponse, error) {
+	resp, err := http.Get(fmt.Sprintf(delete, magnetURL, c.AppName, c.APIKEY, id))
+
+	if err != nil {
+		return DeleteMagnetResponse{}, err
+	}
+
+	defer resp.Body.Close()
+
+	decoder := json.NewDecoder(resp.Body)
+
+	var deleteResponse DeleteMagnetResponse
+
+	err = decoder.Decode(&deleteResponse)
+	if deleteResponse.Status != "success" {
+		return DeleteMagnetResponse{}, errors.New(deleteResponse.Error.Message)
+	}
+
+	return deleteResponse, err
 }
