@@ -9,11 +9,19 @@ import (
 )
 
 const (
-	upload = "%s/upload?agent=%s&apikey=%s"
-	status = "%s/status?agent=%s&apikey=%s&id=%s"
-	delete = "%s/delete?agent=%s&apikey=%s&id=%s"
+	upload  = "%s/upload?agent=%s&apikey=%s"
+	status  = "%s/status?agent=%s&apikey=%s&id=%s"
+	delete  = "%s/delete?agent=%s&apikey=%s&id=%s"
+	restart = "%s/restart?agent=%s&apikey=%s&id=%s"
 )
 
+//Error is the error struct
+type Error struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
+}
+
+//MagnetsUploadResponse is the response of the upload call
 type MagnetsUploadResponse struct {
 	Status string `json:"status"`
 	Data   struct {
@@ -30,12 +38,10 @@ type MagnetsUploadResponse struct {
 			} `json:"error,omitempty"`
 		} `json:"magnets"`
 	} `json:"data,omitempty"`
-	Error struct {
-		Code    string `json:"code"`
-		Message string `json:"message"`
-	} `json:"error,omitempty"`
+	Error Error `json:"error,omitempty"`
 }
 
+//StatusMagnetResponse is the response of the status call
 type StatusMagnetResponse struct {
 	Status string `json:"status"`
 	Data   struct {
@@ -54,23 +60,28 @@ type StatusMagnetResponse struct {
 			Links         []interface{} `json:"links"`
 		} `json:"magnets"`
 	} `json:"data,omitempty"`
-	Error struct {
-		Code    string `json:"code"`
-		Message string `json:"message"`
-	} `json:"error,omitempty"`
+	Error Error `json:"error,omitempty"`
 }
 
+//DeleteMagnetResponse is the response of the delete call
 type DeleteMagnetResponse struct {
 	Status string `json:"status"`
 	Data   struct {
 		Message string `json:"message"`
 	} `json:"data,omitempty"`
-	Error struct {
-		Code    string `json:"code"`
-		Message string `json:"message"`
-	} `json:"error,omitempty"`
+	Error Error `json:"error,omitempty"`
 }
 
+//RestartMagnetResponse is the response of the restart call
+type RestartMagnetResponse struct {
+	Status string `json:"status"`
+	Data   struct {
+		Message string `json:"message"`
+	} `json:"data,omitempty"`
+	Error Error `json:"error,omitempty"`
+}
+
+// UploadMagnet sends magnet(s) to AllDebrid
 func (c *Client) UploadMagnet(magnets []string) (MagnetsUploadResponse, error) {
 	client := &http.Client{}
 
@@ -92,13 +103,18 @@ func (c *Client) UploadMagnet(magnets []string) (MagnetsUploadResponse, error) {
 	var uploadResponse MagnetsUploadResponse
 
 	err = decoder.Decode(&uploadResponse)
+	if err != nil {
+		return MagnetsUploadResponse{}, err
+	}
+
 	if uploadResponse.Status != "success" {
 		return MagnetsUploadResponse{}, errors.New(uploadResponse.Error.Message)
 	}
 
-	return uploadResponse, err
+	return uploadResponse, nil
 }
 
+//StatusMagnet returns the status of an Alldebrid download
 func (c *Client) StatusMagnet(id string) (StatusMagnetResponse, error) {
 	resp, err := http.Get(fmt.Sprintf(status, magnetURL, c.AppName, c.APIKEY, id))
 
@@ -113,13 +129,18 @@ func (c *Client) StatusMagnet(id string) (StatusMagnetResponse, error) {
 	var statusResponse StatusMagnetResponse
 
 	err = decoder.Decode(&statusResponse)
+	if err != nil {
+		return StatusMagnetResponse{}, err
+	}
+
 	if statusResponse.Status != "success" {
 		return StatusMagnetResponse{}, errors.New(statusResponse.Error.Message)
 	}
 
-	return statusResponse, err
+	return statusResponse, nil
 }
 
+//DeleteMagnet removes a download from alldebrid
 func (c *Client) DeleteMagnet(id string) (DeleteMagnetResponse, error) {
 	resp, err := http.Get(fmt.Sprintf(delete, magnetURL, c.AppName, c.APIKEY, id))
 
@@ -134,9 +155,39 @@ func (c *Client) DeleteMagnet(id string) (DeleteMagnetResponse, error) {
 	var deleteResponse DeleteMagnetResponse
 
 	err = decoder.Decode(&deleteResponse)
+	if err != nil {
+		return DeleteMagnetResponse{}, err
+	}
+
 	if deleteResponse.Status != "success" {
 		return DeleteMagnetResponse{}, errors.New(deleteResponse.Error.Message)
 	}
 
-	return deleteResponse, err
+	return deleteResponse, nil
+}
+
+//RestartMagnet will restart a failed torrent
+func (c *Client) RestartMagnet(id string) (RestartMagnetResponse, error) {
+	resp, err := http.Get(fmt.Sprintf(restart, magnetURL, c.AppName, c.APIKEY, id))
+
+	if err != nil {
+		return RestartMagnetResponse{}, err
+	}
+
+	defer resp.Body.Close()
+
+	decoder := json.NewDecoder(resp.Body)
+
+	var restartResponse RestartMagnetResponse
+
+	err = decoder.Decode(&restartResponse)
+	if err != nil {
+		return RestartMagnetResponse{}, err
+	}
+
+	if restartResponse.Status != "success" {
+		return RestartMagnetResponse{}, errors.New(restartResponse.Error.Message)
+	}
+
+	return restartResponse, nil
 }
