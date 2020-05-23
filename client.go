@@ -4,8 +4,8 @@ import "errors"
 
 // Client is the base AllDebrid client
 type Client struct {
-	APIKEY  string
-	AppName string
+	apikey  string
+	appName string
 }
 
 // New returns a new alldebrid client and error if one ore more vars are missing
@@ -19,7 +19,7 @@ func New(key, appname string) (Client, error) {
 	}
 
 	return Client{
-		AppName: appname,
-		APIKEY:  key,
+		appName: appname,
+		apikey:  key,
 	}, nil
 }

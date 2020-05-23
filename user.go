@@ -42,7 +42,7 @@ type User struct {
 
 //GetUserInfo retrieves user infos from alldebrid
 func (c *Client) GetUserInfo() (User, error) {
-	resp, err := http.Get(fmt.Sprintf(userinfo, user, c.AppName, c.APIKEY))
+	resp, err := http.Get(fmt.Sprintf(userinfo, user, c.appName, c.apikey))
 	if err != nil {
 		return User{}, err
 	}
