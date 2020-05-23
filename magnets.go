@@ -79,6 +79,19 @@ type RestartMagnetResponse struct {
 	Error Error `json:"error,omitempty"`
 }
 
+//InstantAvailabilityResponse is the response of the instant availability call
+type InstantAvailabilityResponse struct {
+	Status string `json:"status"`
+	Data   struct {
+		Magnets []struct {
+			Magnet  string `json:"magnet"`
+			Hash    string `json:"hash"`
+			Instant bool   `json:"instant"`
+		} `json:"magnets"`
+	} `json:"data,omitempty"`
+	Error Error `json:"error,omitempty"`
+}
+
 // UploadMagnet sends magnet(s) to AllDebrid
 func (c *Client) UploadMagnet(magnets []string) (MagnetsUploadResponse, error) {
 	client := &http.Client{}
@@ -184,4 +197,36 @@ func (c *Client) RestartMagnet(id string) (RestartMagnetResponse, error) {
 	}
 
 	return restartResponse, nil
+}
+
+//InstantAvailability sends magnet(s) to AllDebrid to know if thery are already available
+func (c *Client) InstantAvailability(magnets []string) (InstantAvailabilityResponse, error) {
+	client := &http.Client{}
+
+	ms := url.Values{}
+	for _, magnet := range magnets {
+		ms.Add("magnets[]", magnet)
+	}
+
+	resp, err := client.PostForm(fmt.Sprintf(magnetupload, magnetURL, c.AppName, c.APIKEY), ms)
+	if err != nil {
+		return InstantAvailabilityResponse{}, err
+	}
+
+	defer resp.Body.Close()
+
+	decoder := json.NewDecoder(resp.Body)
+
+	var instantResponse InstantAvailabilityResponse
+
+	err = decoder.Decode(&instantResponse)
+	if err != nil {
+		return InstantAvailabilityResponse{}, err
+	}
+
+	if instantResponse.Status != "success" {
+		return InstantAvailabilityResponse{}, errors.New(instantResponse.Error.Message)
+	}
+
+	return instantResponse, nil
 }
