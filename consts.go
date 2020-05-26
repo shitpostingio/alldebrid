@@ -26,4 +26,9 @@ const (
 	user = "https://api.alldebrid.com/v4/user"
 
 	userinfo = "%s?agent=%s&apikey=%s"
+
+	// Pin is the endpoint for PIN auth API
+	pin      = "https://api.alldebrid.com/v4/pin"
+	pinget   = "%s/get?agent=%s"
+	pincheck = "%s/check?agent=%s&check=%s&pin=%s"
 )
