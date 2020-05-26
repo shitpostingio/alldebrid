@@ -2,7 +2,6 @@ name: Go
 
 on:
   push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -29,9 +28,14 @@ jobs:
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
             dep ensure
         fi
+    - name: Format
+      run: go fmt $(go list ./...)
+        
+    - name: Lint
+      run: golint -set_exit_status $(go list ./...)
+      
+    - name: Test
+      run: go test -v .
 
     - name: Build
       run: go build -v .
-
-    - name: Test
-      run: go test -v .
