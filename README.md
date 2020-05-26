@@ -1,3 +1,4 @@
+![Go](https://github.com/shitpostingio/alldebrid/workflows/Go/badge.svg)
 # Alldebrid Go Library
 
 This is a Go wrapper for Alldebrid v4 APIs
