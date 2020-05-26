@@ -29,7 +29,9 @@ jobs:
             dep ensure
         fi
     - name: Format
-      run: go fmt $(go list ./...)
+      run: |
+        go get -u golang.org/x/lint/golint
+        go fmt $(go list ./...)
         
     - name: Lint
       run: golint -set_exit_status $(go list ./...)
