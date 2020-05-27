@@ -14,9 +14,6 @@ type innerClient struct {
 
 // New returns a new alldebrid client and error if one ore more vars are missing
 func New(key, appname string) (Client, error) {
-	if key == "" {
-		return Client{}, errors.New("Missing APIKEY")
-	}
 
 	if appname == "" {
 		return Client{}, errors.New("Missing appname")
@@ -28,4 +25,9 @@ func New(key, appname string) (Client, error) {
 			apikey:  key,
 		},
 	}, nil
+}
+
+//SetAPIKey sets the client apikey (in case you obtained it via pin request)
+func (c *Client) SetAPIKey(apikey string) {
+	c.ic.apikey = apikey
 }
