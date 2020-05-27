@@ -34,7 +34,7 @@ func TestNew(t *testing.T) {
 			assertion: assert.NoError,
 		},
 		{
-			name: "one empty arg",
+			name: "no appname",
 			args: args{
 				appname: "",
 				key:     "123456abcdef",
