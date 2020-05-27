@@ -1,8 +1,9 @@
 package alldebrid
 
 import (
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNew(t *testing.T) {
@@ -11,10 +12,10 @@ func TestNew(t *testing.T) {
 		appname string
 	}
 	tests := []struct {
-		name    string
-		args    args
-		want    Client
-		wantErr bool
+		name      string
+		args      args
+		want      Client
+		assertion assert.ErrorAssertionFunc
 	}{
 		{
 			name: "two empty args",
@@ -22,7 +23,7 @@ func TestNew(t *testing.T) {
 				appname: "",
 				key:     "",
 			},
-			wantErr: true,
+			assertion: assert.Error,
 		},
 		{
 			name: "one empty arg",
@@ -30,7 +31,7 @@ func TestNew(t *testing.T) {
 				appname: "myclient",
 				key:     "",
 			},
-			wantErr: true,
+			assertion: assert.Error,
 		},
 		{
 			name: "one empty arg",
@@ -38,7 +39,7 @@ func TestNew(t *testing.T) {
 				appname: "",
 				key:     "123456abcdef",
 			},
-			wantErr: true,
+			assertion: assert.Error,
 		},
 		{
 			name: "no empty args",
@@ -46,23 +47,21 @@ func TestNew(t *testing.T) {
 				appname: "myclient",
 				key:     "123456abcdef",
 			},
-			wantErr: false,
 			want: Client{
-				appName: "myclient",
-				apikey:  "123456abcdef",
+				ic: &innerClient{
+					appName: "myclient",
+					apikey:  "123456abcdef",
+				},
 			},
+			assertion: assert.NoError,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got, err := New(tt.args.key, tt.args.appname)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("New() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("New() = %v, want %v", got, tt.want)
-			}
+
+			tt.assertion(t, err)
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
