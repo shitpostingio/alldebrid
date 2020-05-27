@@ -26,12 +26,12 @@ func TestNew(t *testing.T) {
 			assertion: assert.Error,
 		},
 		{
-			name: "one empty arg",
+			name: "only appname",
 			args: args{
 				appname: "myclient",
 				key:     "",
 			},
-			assertion: assert.Error,
+			assertion: assert.NoError,
 		},
 		{
 			name: "one empty arg",
