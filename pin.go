@@ -9,32 +9,36 @@ import (
 
 //GetPinResponse contains data about the get pin request
 type GetPinResponse struct {
-	Status string `json:"status"`
-	Data   struct {
-		Pin       string `json:"pin"`
-		Check     string `json:"check"`
-		ExpiresIn int    `json:"expires_in"`
-		UserURL   string `json:"user_url"`
-		BaseURL   string `json:"base_url"`
-		CheckURL  string `json:"check_url"`
-	} `json:"data,omitempty"`
-	Error Error `json:"error,omitempty"`
+	Status string         `json:"status"`
+	Data   getPinData     `json:"data,omitempty"`
+	Error  alldebridError `json:"error,omitempty"`
+}
+
+type getPinData struct {
+	Pin       string `json:"pin"`
+	Check     string `json:"check"`
+	ExpiresIn int    `json:"expires_in"`
+	UserURL   string `json:"user_url"`
+	BaseURL   string `json:"base_url"`
+	CheckURL  string `json:"check_url"`
 }
 
 //CheckPinResponse contains data about the check pin request
 type CheckPinResponse struct {
-	Status string `json:"status"`
-	Data   struct {
-		Apikey    string `json:"apikey,omitempty"`
-		Activated bool   `json:"activated"`
-		ExpiresIn int    `json:"expires_in"`
-	} `json:"data,omitempty"`
-	Error Error `json:"error,omitempty"`
+	Status string               `json:"status"`
+	Data   checkPinResponseData `json:"data,omitempty"`
+	Error  alldebridError       `json:"error,omitempty"`
+}
+
+type checkPinResponseData struct {
+	Apikey    string `json:"apikey,omitempty"`
+	Activated bool   `json:"activated"`
+	ExpiresIn int    `json:"expires_in"`
 }
 
 //GetPin asks Alldebrid for a new pin
 func (c *Client) GetPin() (GetPinResponse, error) {
-	resp, err := http.Get(fmt.Sprintf(pinget, pin, c.appName))
+	resp, err := http.Get(fmt.Sprintf(pinget, getPinEndpoint(), c.ic.appName))
 	if err != nil {
 		return GetPinResponse{}, err
 	}
@@ -59,7 +63,7 @@ func (c *Client) GetPin() (GetPinResponse, error) {
 
 //CheckPin gives you an apikey after pin validating
 func (c *Client) CheckPin(check, authpin string) (CheckPinResponse, error) {
-	resp, err := http.Get(fmt.Sprintf(pincheck, check, c.appName, check, authpin))
+	resp, err := http.Get(fmt.Sprintf(pincheck, getPinEndpoint(), c.ic.appName, check, authpin))
 	if err != nil {
 		return CheckPinResponse{}, err
 	}

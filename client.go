@@ -4,6 +4,10 @@ import "errors"
 
 // Client is the base AllDebrid client
 type Client struct {
+	ic *innerClient
+}
+
+type innerClient struct {
 	apikey  string
 	appName string
 }
@@ -19,7 +23,9 @@ func New(key, appname string) (Client, error) {
 	}
 
 	return Client{
-		appName: appname,
-		apikey:  key,
+		ic: &innerClient{
+			appName: appname,
+			apikey:  key,
+		},
 	}, nil
 }

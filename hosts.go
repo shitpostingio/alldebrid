@@ -9,18 +9,20 @@ import (
 
 //Domains is the domains response struct
 type Domains struct {
-	Status string `json:"status"`
-	Data   struct {
-		Hosts       []string `json:"hosts"`
-		Streams     []string `json:"streams"`
-		Redirectors []string `json:"redirectors"`
-	} `json:"data,omitempty"`
-	Error Error `json:"error,omitempty"`
+	Status string         `json:"status"`
+	Data   domainsData    `json:"data,omitempty"`
+	Error  alldebridError `json:"error,omitempty"`
+}
+
+type domainsData struct {
+	Hosts       []string `json:"hosts"`
+	Streams     []string `json:"streams"`
+	Redirectors []string `json:"redirectors"`
 }
 
 //GetDomainsOnly returns list of supported hosts domains and redirectors
 func (c *Client) GetDomainsOnly() (Domains, error) {
-	resp, err := http.Get(fmt.Sprintf(hostsdomains, hosts, c.appName))
+	resp, err := http.Get(fmt.Sprintf(hostsdomains, hosts, c.ic.appName))
 
 	if err != nil {
 		return Domains{}, err
