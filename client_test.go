@@ -71,3 +71,36 @@ func TestNew(t *testing.T) {
 		})
 	}
 }
+
+func TestClient_SetAPIKey(t *testing.T) {
+	type args struct {
+		apikey string
+	}
+	tests := []struct {
+		name      string
+		c         *Client
+		args      args
+		assertion assert.ErrorAssertionFunc
+	}{
+		{
+			name:      "no apikey provided",
+			c:         noapicl,
+			args:      args{apikey: ""},
+			assertion: assert.Error,
+		},
+		{
+			name:      "apikey provided",
+			c:         noapicl,
+			args:      args{apikey: "123456abcdef"},
+			assertion: assert.NoError,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.c.SetAPIKey(tt.args.apikey)
+
+			tt.assertion(t, err)
+		})
+	}
+
+}
