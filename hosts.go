@@ -22,7 +22,7 @@ type domainsData struct {
 
 //GetDomainsOnly returns list of supported hosts domains and redirectors
 func (c *Client) GetDomainsOnly() (Domains, error) {
-	resp, err := http.Get(fmt.Sprintf(hostsdomains, hosts, c.ic.appName))
+	resp, err := http.Get(fmt.Sprintf(hostsdomains, getHostsEndpoint(), c.ic.appName))
 
 	if err != nil {
 		return Domains{}, err
