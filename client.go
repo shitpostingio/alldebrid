@@ -28,6 +28,11 @@ func New(key, appname string) (Client, error) {
 }
 
 //SetAPIKey sets the client apikey (in case you obtained it via pin request)
-func (c *Client) SetAPIKey(apikey string) {
+func (c *Client) SetAPIKey(apikey string) error {
+	if apikey == "" {
+		return errors.New("no apikey provided")
+	}
+
 	c.ic.apikey = apikey
+	return nil
 }
