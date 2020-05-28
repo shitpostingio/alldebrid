@@ -213,7 +213,7 @@ func (c *Client) InstantAvailability(magnets []string) (InstantAvailabilityRespo
 		ms.Add("magnets[]", magnet)
 	}
 
-	resp, err := client.PostForm(fmt.Sprintf(magnetupload, getMagnetEndpoint(), c.ic.appName, c.ic.apikey), ms)
+	resp, err := client.PostForm(fmt.Sprintf(magnetinstant, getMagnetEndpoint(), c.ic.appName, c.ic.apikey), ms)
 	if err != nil {
 		return InstantAvailabilityResponse{}, err
 	}
