@@ -31,6 +31,12 @@ func TestNew(t *testing.T) {
 				appname: "myclient",
 				key:     "",
 			},
+			want: Client{
+				ic: &innerClient{
+					appName: "myclient",
+					apikey:  "",
+				},
+			},
 			assertion: assert.NoError,
 		},
 		{
