@@ -24,6 +24,20 @@ func TestClient_GetPin(t *testing.T) {
 		assertion  assert.ErrorAssertionFunc
 	}{
 		{
+			name:       "bad json",
+			jsonResp:   `{"status":"success",}`,
+			statusResp: http.StatusOK,
+			c:          cl,
+			assertion:  assert.Error,
+		},
+		{
+			name:       "error",
+			jsonResp:   `{"status":"error"}`,
+			statusResp: http.StatusOK,
+			c:          cl,
+			assertion:  assert.Error,
+		},
+		{
 			name:       "valid request",
 			jsonResp:   `{"status":"success","data":{"pin":"ABCD","check":"0fdfb8b5a548aff3d6cc1c62c32761e532d2c1f7","expires_in":600,"user_url":"https:\/\/alldebrid.com\/pin\/?pin=ABCD","base_url": "https:\/\/alldebrid.com\/pin\/","check_url":"https:\/\/api.alldebrid.com\/v4\/pin\/check?check=0fdfb8b5a548aff3d6cc1c62c32761e532d2c1f7&pin=ABCD&agent=test"}}`,
 			statusResp: http.StatusOK,
