@@ -8,6 +8,7 @@ const (
 	magnetstatus  = "%s/status?agent=%s&apikey=%s&id=%s"
 	magnetdelete  = "%s/delete?agent=%s&apikey=%s&id=%s"
 	magnetrestart = "%s/restart?agent=%s&apikey=%s&id=%s"
+	magnetinstant = "%s/instant?agent=%s&apikey=%s"
 
 	// LinksURL is the endpoint for the link API
 	links = "https://api.alldebrid.com/v4/link"
