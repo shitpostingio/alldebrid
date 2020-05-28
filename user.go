@@ -44,11 +44,12 @@ type userQuotas struct {
 	Ddl         int `json:"ddl"`
 	Flashbit    int `json:"flashbit"`
 	Anzfile     int `json:"anzfile"`
+	Keep2Share  int `json:"keep2share"`
 }
 
 //GetUserInfo retrieves user infos from alldebrid
 func (c *Client) GetUserInfo() (User, error) {
-	resp, err := http.Get(fmt.Sprintf(userinfo, user, c.ic.appName, c.ic.apikey))
+	resp, err := http.Get(fmt.Sprintf(userinfo, getUserEndpoint(), c.ic.appName, c.ic.apikey))
 	if err != nil {
 		return User{}, err
 	}
