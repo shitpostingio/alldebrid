@@ -30,7 +30,7 @@ jobs:
         go get -u golang.org/x/lint/golint
         go fmt $(go list ./...)   
 
-   - name: golint
+    - name: golint
       run: golint -set_exit_status $(go list ./...)
 
   test:
