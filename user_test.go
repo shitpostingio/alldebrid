@@ -24,98 +24,27 @@ func TestClient_GetUserInfo(t *testing.T) {
 		assertion  assert.ErrorAssertionFunc
 	}{
 		{
-			name: "no apikey provided",
-			jsonResp: `{
-				"status": "error",
-				"error": {
-				  "code": "AUTH_MISSING_APIKEY",
-				  "message": "The auth apikey was not sent"
-				}
-			  }`,
+			name:       "error",
+			jsonResp:   `{"status":"error"}`,
 			statusResp: http.StatusOK,
 			c:          noapicl,
-			want:       User{},
 			assertion:  assert.Error,
 		},
 		{
-			name: "bad json",
-			jsonResp: `{
-				"status": "error",
-				"error": {
-				  "code": "AUTH_BAD_APIKEY",
-				  "message": "The auth apikey is invalid"
-				},
-			  }`,
+			name:       "bad json",
+			jsonResp:   `{"status":success"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
 			want:       User{},
 			assertion:  assert.Error,
 		},
 		{
-			name: "valid request",
-			jsonResp: `{
-				"status": "success",
-				"data": {
-				  "user": {
-					"username": "User",
-					"email": "testing@isfun.com",
-					"isPremium": true,
-					"isTrial": false,
-					"premiumUntil": 1619568038,
-					"lang": "en",
-					"preferedDomain": "com",
-					"fidelityPoints": 100,
-					"limitedHostersQuotas": {
-					  "filefactory": 3000,
-					  "gigapeta": 10000,
-					  "videobin": 10000,
-					  "isra": 3000,
-					  "rapidgator": 50000,
-					  "rapidu": 5000,
-					  "brupload": 3000,
-					  "uploadcloud": 2000,
-					  "userscloud": 3000,
-					  "wipfiles": 3000,
-					  "ddl": 50000,
-					  "flashbit": 5000,
-					  "anzfile": 3000,
-					  "keep2share": 5000
-					}
-				  }
-				}
-			  }`,
+			name:       "valid request",
+			jsonResp:   `{"status":"success"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
 			want: User{
 				Status: "success",
-				Data: userData{
-					userDataUser{
-						Username:       "User",
-						Email:          "testing@isfun.com",
-						IsPremium:      true,
-						IsTrial:        false,
-						PremiumUntil:   1619568038,
-						Lang:           "en",
-						PreferedDomain: "com",
-						FidelityPoints: 100,
-						LimitedHostersQuotas: userQuotas{
-							Filefactory: 3000,
-							Gigapeta:    10000,
-							Videobin:    10000,
-							Isra:        3000,
-							Rapidgator:  50000,
-							Rapidu:      5000,
-							Brupload:    3000,
-							Uploadcloud: 2000,
-							Userscloud:  3000,
-							Wipfiles:    3000,
-							Ddl:         50000,
-							Flashbit:    5000,
-							Anzfile:     3000,
-							Keep2Share:  5000,
-						},
-					},
-				},
 			},
 			assertion: assert.NoError,
 		},

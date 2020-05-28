@@ -245,29 +245,20 @@ func TestClient_RestartMagnet(t *testing.T) {
 			jsonResp:   `{"status":"error"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
-			args: args{
-				magnetID: "",
-			},
-			assertion: assert.Error,
+			assertion:  assert.Error,
 		},
 		{
 			name:       "bad json",
 			jsonResp:   `{"status:"error"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
-			args: args{
-				magnetID: "",
-			},
-			assertion: assert.Error,
+			assertion:  assert.Error,
 		},
 		{
 			name:       "success",
 			jsonResp:   `{"status":"success"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
-			args: args{
-				magnetID: "",
-			},
 			want: RestartMagnetResponse{
 				Status: "success",
 			},

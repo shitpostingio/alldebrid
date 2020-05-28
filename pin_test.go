@@ -94,64 +94,26 @@ func TestClient_CheckPin(t *testing.T) {
 		assertion  assert.ErrorAssertionFunc
 	}{
 		{
-			name: "no pin provided",
-			jsonResp: `{
-				"status": "error",
-				"error": {
-				  "code": "PIN_INVALID",
-				  "message": "The pin is invalid"
-				}
-			}`,
+			name:       "no pin provided",
+			jsonResp:   `{"status":"error"}`,
 			statusResp: http.StatusOK,
-			a: args{
-				"24c23d09687a4c63ff571570eb7aebb3913a3ffb",
-				"",
-			},
-			c:         cl,
-			want:      CheckPinResponse{},
-			assertion: assert.Error,
+			c:          cl,
+			assertion:  assert.Error,
 		},
 		{
-			name: "bad json",
-			jsonResp: `{
-				"status": "error",
-				"error": {
-				  "code": "PIN_INVALID",
-				  "message": "The pin is invalid"
-				},
-			}`,
+			name:       "bad json",
+			jsonResp:   `{"status":success"}`,
 			statusResp: http.StatusOK,
-			a: args{
-				"24c23d09687a4c63ff571570eb7aebb3913a3ffb",
-				"",
-			},
-			c:         cl,
-			want:      CheckPinResponse{},
-			assertion: assert.Error,
+			c:          cl,
+			assertion:  assert.Error,
 		},
 		{
-			name: "no error",
-			jsonResp: `{
-				"status": "success",
-				"data": {	
-				  "apikey": "12345678abcdefg",
-				  "activated": true,
-				  "expires_in": 576
-				}
-			  }`,
+			name:       "no error",
+			jsonResp:   `{"status":"success"}`,
 			statusResp: http.StatusOK,
-			a: args{
-				"24c23d09687a4c63ff571570eb7aebb3913a3ffb",
-				"ABCD",
-			},
-			c: cl,
+			c:          cl,
 			want: CheckPinResponse{
 				Status: "success",
-				Data: checkPinResponseData{
-					Apikey:    "12345678abcdefg",
-					Activated: true,
-					ExpiresIn: 576,
-				},
 			},
 			assertion: assert.NoError,
 		},

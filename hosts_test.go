@@ -23,13 +23,6 @@ func TestClient_GetDomainsOnly(t *testing.T) {
 		assertion  assert.ErrorAssertionFunc
 	}{
 		{
-			name:       "get error",
-			jsonResp:   ``,
-			statusResp: http.StatusPermanentRedirect,
-			c:          cl,
-			assertion:  assert.Error,
-		},
-		{
 			name:       "bad json",
 			jsonResp:   `{"status":"successful",}`,
 			statusResp: http.StatusOK,
