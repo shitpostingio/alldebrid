@@ -7,8 +7,8 @@ on:
 
 jobs:
 
-  build:
-    name: Build
+  format:
+    name: Format
     runs-on: ubuntu-latest
     steps:
 
@@ -24,20 +24,50 @@ jobs:
     - name: Get dependencies
       run: |
         go get -v -t -d ./...
-        if [ -f Gopkg.toml ]; then
-            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-            dep ensure
-        fi
-    - name: Format
+
+    - name: go fmt
       run: |
         go get -u golang.org/x/lint/golint
-        go fmt $(go list ./...)
-        
-    - name: Lint
-      run: golint -set_exit_status $(go list ./...)
-      
-    - name: Test
-      run: go test -v .
+        go fmt $(go list ./...)   
 
-    - name: Build
+   - name: golint
+      run: golint -set_exit_status $(go list ./...)
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.14
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Get dependencies
+      run: |
+        go get -v -t -d ./...
+    - name: go test
+      run: go test -v .  
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Go 1.x
+      uses: actions/setup-go@v2
+      with:
+        go-version: ^1.14
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v2
+
+    - name: Get dependencies
+      run: |
+        go get -v -t -d ./...
+
+    - name: go build
       run: go build -v .
