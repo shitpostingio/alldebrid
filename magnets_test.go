@@ -28,30 +28,18 @@ func TestClient_UploadMagnet(t *testing.T) {
 		assertion  assert.ErrorAssertionFunc
 	}{
 		{
-			name: "no magnet",
-			jsonResp: `{
-				"status": "error",
-				"error": {
-				  "code": "MAGNET_NO_URI",
-				  "message": "No magnet sent"
-				}
-			}`,
+			name:       "error",
+			jsonResp:   `{"status":"error"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
-			args: args{
-				magnets: []string{""},
-			},
-			assertion: assert.Error,
+			assertion:  assert.Error,
 		},
 		{
 			name:       "bad json",
 			jsonResp:   `{"status:"success"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
-			args: args{
-				magnets: []string{""},
-			},
-			assertion: assert.Error,
+			assertion:  assert.Error,
 		},
 		{
 			name:       "success",
@@ -103,33 +91,24 @@ func TestClient_StatusMagnet(t *testing.T) {
 		assertion  assert.ErrorAssertionFunc
 	}{
 		{
-			name:       "no id",
+			name:       "error",
 			jsonResp:   `{"status":"error"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
-			args: args{
-				magnetID: "",
-			},
-			assertion: assert.Error,
+			assertion:  assert.Error,
 		},
 		{
 			name:       "bad json",
 			jsonResp:   `{"status:"error"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
-			args: args{
-				magnetID: "",
-			},
-			assertion: assert.Error,
+			assertion:  assert.Error,
 		},
 		{
 			name:       "success",
 			jsonResp:   `{"status":"success"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
-			args: args{
-				magnetID: "",
-			},
 			want: StatusMagnetResponse{
 				Status: "success",
 			},
@@ -172,33 +151,24 @@ func TestClient_DeleteMagnet(t *testing.T) {
 		assertion  assert.ErrorAssertionFunc
 	}{
 		{
-			name:       "no id",
+			name:       "error",
 			jsonResp:   `{"status":"error"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
-			args: args{
-				magnetID: "",
-			},
-			assertion: assert.Error,
+			assertion:  assert.Error,
 		},
 		{
 			name:       "bad json",
 			jsonResp:   `{"status:"error"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
-			args: args{
-				magnetID: "",
-			},
-			assertion: assert.Error,
+			assertion:  assert.Error,
 		},
 		{
 			name:       "success",
 			jsonResp:   `{"status":"success"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
-			args: args{
-				magnetID: "",
-			},
 			want: DeleteMagnetResponse{
 				Status: "success",
 			},
@@ -241,7 +211,7 @@ func TestClient_RestartMagnet(t *testing.T) {
 		assertion  assert.ErrorAssertionFunc
 	}{
 		{
-			name:       "no id",
+			name:       "error",
 			jsonResp:   `{"status":"error"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
@@ -301,41 +271,29 @@ func TestClient_InstantAvailability(t *testing.T) {
 		assertion  assert.ErrorAssertionFunc
 	}{
 		{
-			name: "no magnet",
-			jsonResp: `{
-				"status": "error",
-				"error": {
-				  "code": "MAGNET_NO_URI",
-				  "message": "No magnet sent"
-				}
-			}`,
+			name:       "error",
+			jsonResp:   `{"status":"error"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
-			args: args{
-				magnets: []string{""},
-			},
-			assertion: assert.Error,
+			assertion:  assert.Error,
 		},
 		{
 			name:       "bad json",
 			jsonResp:   `{"status:"success"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
-			args: args{
-				magnets: []string{""},
-			},
-			assertion: assert.Error,
+			assertion:  assert.Error,
 		},
 		{
 			name:       "success",
 			jsonResp:   `{"status": "success"}`,
 			statusResp: http.StatusOK,
 			c:          cl,
-			args: args{
-				magnets: []string{"magnet:?xt=urn:btih:f95c371d5609d15f6615139be84edbb5b94a79bc"},
-			},
 			want: InstantAvailabilityResponse{
 				Status: "success",
+			},
+			args: args{
+				magnets: []string{"magnet:?xt=urn:btih:f95c371d5609d15f6615139be84edbb5b94a79bc"},
 			},
 			assertion: assert.NoError,
 		},
