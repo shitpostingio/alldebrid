@@ -52,7 +52,9 @@ jobs:
     - name: go test
       run: go test -v -coverprofile=cover.out .
     - name: install deepsource
-      run: curl https://deepsource.io/cli | sh
+      run: |
+        curl https://deepsource.io/cli | sh
+        export DEEPSOURCE_DSN = ${{secrets.DEEPSOURCE_DSN}}
     - name: run deepsource
       run: ./bin/deepsource report --analyzer test-coverage --key go --value-file ./cover.out  
 
