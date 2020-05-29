@@ -50,7 +50,16 @@ jobs:
       run: |
         go get -v -t -d ./...
     - name: go test
-      run: go test -v .  
+      run: go test -v .
+    - name: install deepsource
+      run: |
+        curl https://deepsource.io/cli | sh
+    - name: run deepsource
+      run: |
+        go test -coverprofile=cover.out
+        ./bin/deepsource report --analyzer test-coverage --key go --value-file ./cover.out
+      env:
+        DEEPSOURCE_DSN: ${{secrets.DEEPSOURCE_DSN}}
 
   build:
     name: Build
