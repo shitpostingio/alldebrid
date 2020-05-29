@@ -4,5 +4,8 @@ version = 1
 name = "go"
 enabled = true
 
+name = "test-coverage"
+enabled = true
+
   [analyzers.meta]
   import_path = "github.com/shitpostingio/alldebrid"
