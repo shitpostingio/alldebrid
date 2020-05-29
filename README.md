@@ -1,4 +1,6 @@
 ![Go](https://github.com/shitpostingio/alldebrid/workflows/Go/badge.svg)
+[![DeepSource](https://static.deepsource.io/deepsource-badge-light-mini.svg)](https://deepsource.io/gh/shitpostingio/alldebrid/?ref=repository-badge)
+[![Go Report Card](https://goreportcard.com/badge/github.com/shitpostingio/alldebrid)](https://goreportcard.com/report/github.com/shitpostingio/alldebrid)
 # Alldebrid Go Library
 
 This is a Go wrapper for Alldebrid v4 APIs
