@@ -37,7 +37,7 @@ type StatusMagnetResponse struct {
 }
 
 type statusMagnetResponseData struct {
-	Magnets []statusMagnetResponseMagnet `json:"magnets"`
+	Magnets statusMagnetResponseMagnet `json:"magnets"`
 }
 
 type statusMagnetResponseMagnet struct {
