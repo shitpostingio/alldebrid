@@ -28,7 +28,7 @@ type unlockLinkResponseData struct {
 type unlockLinkStreams struct {
 	ID       string  `json:"id"`
 	Ext      string  `json:"ext"`
-	Quality  string  `json:"quality"`
+	Quality  int     `json:"quality"`
 	Filesize int     `json:"filesize"`
 	Proto    string  `json:"proto"`
 	Name     string  `json:"name"`
